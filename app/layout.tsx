@@ -26,8 +26,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || seo.url;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(seo.url),
+  metadataBase: new URL(siteUrl),
   title: {
     default: seo.title,
     template: `%s | Vishal Murugadhas`,
@@ -44,21 +46,21 @@ export const metadata: Metadata = {
     "AegisAI",
     "StockSense India",
   ],
-  authors: [{ name: "Vishal Murugadhas", url: seo.url }],
+  authors: [{ name: "Vishal Murugadhas", url: siteUrl }],
   creator: "Vishal Murugadhas",
   openGraph: {
     type: "website",
-    url: seo.url,
+    url: siteUrl,
     title: seo.title,
     description: seo.description,
     siteName: "Vishal Murugadhas",
-    images: [{ url: seo.ogImage, width: 1200, height: 630, alt: seo.title }],
+    images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: seo.title }],
   },
   twitter: {
     card: "summary_large_image",
     title: seo.title,
     description: seo.description,
-    images: [seo.ogImage],
+    images: [`${siteUrl}/og-image.png`],
   },
   robots: {
     index: true,
@@ -67,7 +69,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/icon.svg",
-    apple: "/apple-touch-icon.png",
+    apple: "/icon.svg",
   },
 };
 

@@ -299,6 +299,6 @@ export const seo = {
   title: "Vishal Murugadhas — ML / AI Engineer & Data Pipeline Builder",
   description:
     "Portfolio of Vishal Murugadhas, B.Tech student at SVNIT Surat specializing in ML, AI systems, and streaming data pipelines. 2nd place at PSB Hackathon 2026.",
-  url: "https://vishal-murugadhas.vercel.app", // TODO: replace with your domain
+  url: "https://portfolio-eod.pages.dev",
   ogImage: "/og-image.png",
 };

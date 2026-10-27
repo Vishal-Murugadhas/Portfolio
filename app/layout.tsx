@@ -71,6 +71,9 @@ export const metadata: Metadata = {
     icon: "/icon.svg",
     apple: "/icon.svg",
   },
+  other: {
+    image: `${siteUrl}/og-image.png`,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -80,7 +83,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
       <head>
-        <link rel="canonical" href={seo.url} />
+        <link rel="canonical" href={siteUrl} />
+        {/* Explicit tags required by LinkedIn Post Inspector */}
+        <meta name="image" property="og:image" content={`${siteUrl}/og-image.png`} />
+        <meta property="og:image:secure_url" content={`${siteUrl}/og-image.png`} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={seo.title} />
+        <link rel="image_src" href={`${siteUrl}/og-image.png`} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

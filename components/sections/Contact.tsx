@@ -1,17 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Loader2, ArrowRight } from "lucide-react";
+import { Check, Copy, ArrowRight, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon, LeetcodeIcon } from "@/components/ui/BrandIcons";
 import { identity, contact, profiles } from "@/data/content";
 
-type FormState = "idle" | "loading" | "success" | "activation_needed" | "error";
-
 export default function Contact() {
   const [copiedType, setCopiedType] = useState<"email" | "phone" | null>(null);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "", _hp: "" });
-  const [formErrors, setFormErrors] = useState<{ name?: string; email?: string; message?: string }>({});
-  const [formState, setFormState] = useState<FormState>("idle");
 
   const copyToClipboard = async (text: string, type: "email" | "phone") => {
     try {
@@ -20,60 +15,6 @@ export default function Contact() {
       setTimeout(() => setCopiedType(null), 2500);
     } catch {
       /* fallback */
-    }
-  };
-
-  const validate = () => {
-    const errs: { name?: string; email?: string; message?: string } = {};
-    if (!formData.name.trim()) errs.name = "Name is required";
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errs.email = "Valid email address required";
-    }
-    if (!formData.message.trim() || formData.message.length < 10) {
-      errs.message = "Message must be at least 10 characters";
-    }
-    return errs;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData._hp) return;
-    const errors = validate();
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
-    setFormErrors({});
-    setFormState("loading");
-
-    const endpoint = process.env.NEXT_PUBLIC_FORM_ENDPOINT || "/api/contact";
-    try {
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          _hp: formData._hp,
-        }),
-      });
-
-      const data = await res.json().catch(() => null);
-
-      if (data?.needsActivation) {
-        setFormState("activation_needed");
-        return;
-      }
-
-      if (!res.ok || (data && data.success === false)) {
-        throw new Error(data?.message || "Failed to transmit message");
-      }
-
-      setFormState("success");
-      setFormData({ name: "", email: "", message: "", _hp: "" });
-    } catch {
-      setFormState("error");
     }
   };
 
@@ -166,131 +107,46 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right: contact form */}
-          <form onSubmit={handleSubmit} noValidate>
-            {/* Honeypot */}
-            <input
-              type="text"
-              name="_hp"
-              value={formData._hp}
-              onChange={(e) => setFormData({ ...formData, _hp: e.target.value })}
-              style={{ display: "none" }}
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-            />
-
-            {/* Name */}
-            <div className="field">
-              <label htmlFor="contact-name" className="label-mono">Name</label>
-              <input
-                id="contact-name"
-                type="text"
-                placeholder="Your name or organization"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                disabled={formState === "loading"}
-                className="input"
-                aria-invalid={!!formErrors.name}
-              />
-              {formErrors.name && (
-                <span className="label-mono" style={{ color: "#ff6b6b" }}>{formErrors.name}</span>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className="field">
-              <label htmlFor="contact-email" className="label-mono">Email</label>
-              <input
-                id="contact-email"
-                type="email"
-                placeholder="name@company.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                disabled={formState === "loading"}
-                className="input"
-                aria-invalid={!!formErrors.email}
-              />
-              {formErrors.email && (
-                <span className="label-mono" style={{ color: "#ff6b6b" }}>{formErrors.email}</span>
-              )}
-            </div>
-
-            {/* Message */}
-            <div className="field">
-              <label htmlFor="contact-message" className="label-mono">Message</label>
-              <textarea
-                id="contact-message"
-                rows={6}
-                placeholder="Tell me about the engineering challenges or role you're looking to fill..."
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                disabled={formState === "loading"}
-                className="input"
-                style={{ minHeight: "176px", resize: "vertical" }}
-                aria-invalid={!!formErrors.message}
-              />
-              {formErrors.message && (
-                <span className="label-mono" style={{ color: "#ff6b6b" }}>{formErrors.message}</span>
-              )}
-            </div>
-
-            {/* Submit — btn--action (NOT violet) */}
-            <button
-              type="submit"
-              disabled={formState === "loading"}
-              className="btn btn--action"
-              style={{ width: "100%", justifyContent: "center", whiteSpace: "nowrap" }}
-            >
-              {formState === "loading" ? (
-                <>
-                  <Loader2 size={15} style={{ animation: "spin 1s linear infinite" }} />
-                  Transmitting…
-                </>
-              ) : (
-                <>
-                  Send message
-                  <ArrowRight size={15} />
-                </>
-              )}
-            </button>
-
-            {formState === "success" && (
-              <p className="label-mono" style={{ marginTop: "12px", color: "var(--fg-soft)", lineHeight: 1.5 }}>
-                ✓ Message transmitted successfully! Delivered directly to {identity.email}.
+          {/* Right: zero-maintenance direct mailto action card */}
+          <div
+            className="card"
+            style={{
+              padding: "40px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              gap: "32px",
+            }}
+          >
+            <div>
+              <span className="label-mono" style={{ display: "block", marginBottom: "12px", color: "var(--steel)" }}>
+                DIRECT MESSAGE
+              </span>
+              <h3 style={{ fontSize: "24px", fontWeight: 400, color: "var(--fg)", margin: "0 0 16px", lineHeight: 1.3 }}>
+                Start a conversation.
+              </h3>
+              <p style={{ fontSize: "15px", color: "var(--fg-muted)", lineHeight: 1.6, margin: 0 }}>
+                I&apos;m actively seeking ML/AI and data engineering internship opportunities for 2026. Whether you have an open role, an engineering problem to discuss, or just want to connect, my inbox is open.
               </p>
-            )}
-            {formState === "activation_needed" && (
-              <div style={{ marginTop: "14px", padding: "14px 16px", borderRadius: "10px", background: "rgba(225,189,255,0.08)", border: "1px solid rgba(225,189,255,0.25)" }}>
-                <p className="label-mono" style={{ margin: "0 0 6px", color: "var(--fg)" }}>
-                  ⚠️ One-Time Activation Needed
-                </p>
-                <p style={{ margin: 0, fontSize: "13px", color: "var(--fg-muted)", lineHeight: 1.5 }}>
-                  FormSubmit sent a confirmation email to <strong>{identity.email}</strong> with an &quot;Activate Form&quot; button. Please open that email and click the button once to start receiving all portfolio messages directly in your Gmail!
-                </p>
-              </div>
-            )}
-            {formState === "error" && (
-              <div style={{ marginTop: "14px", padding: "14px 16px", borderRadius: "10px", background: "rgba(255,107,107,0.08)", border: "1px solid rgba(255,107,107,0.25)" }}>
-                <p className="label-mono" style={{ margin: "0 0 8px", color: "#ff6b6b" }}>
-                  Transmission failed.
-                </p>
-                <a
-                  href={`mailto:${identity.email}?subject=Contact from ${encodeURIComponent(formData.name || "Portfolio")}&body=${encodeURIComponent(formData.message || "")}`}
-                  className="btn btn--outline"
-                  style={{ display: "inline-flex", fontSize: "12px", padding: "8px 14px", borderRadius: "9999px" }}
-                >
-                  Send via Mail App <ArrowRight size={13} style={{ marginLeft: "4px" }} />
-                </a>
-              </div>
-            )}
-          </form>
+            </div>
+
+            <div>
+              <a
+                href={`mailto:${identity.email}?subject=ML%20Engineering%20Inquiry%20%E2%80%94%20Vishal%20Murugadhas`}
+                className="btn btn--action"
+                style={{ width: "100%", justifyContent: "center", textDecoration: "none" }}
+              >
+                <Mail size={16} />
+                Send Email to {identity.email}
+                <ArrowRight size={15} />
+              </a>
+              <p className="label-mono" style={{ marginTop: "12px", color: "var(--steel)", textAlign: "center", fontSize: "11px" }}>
+                Opens your default email client · Zero accounts or trackers needed
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
-      `}</style>
     </section>
   );
 }

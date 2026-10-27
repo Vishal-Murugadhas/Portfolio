@@ -1,0 +1,937 @@
+/* ============================================================
+   TASK 0 FINDING: All the JSX uses custom class names
+   (portfolio-section, btn-violet-pill, tech-chip, hairline-input,
+   section-header-stamp, timeline-route, edge-masked-marquee, phantom-bloom,
+   twilight-sky, boarding-pass-barcode, etc.) that were NOT defined in globals.css.
+   The old globals.css used a completely different design system (teal accent,
+   Space Grotesk font, --surface variables) that had no relation to what the JSX
+   expected. Fix: this file defines every custom class the JSX references.
+   ============================================================ */
+
+/* ---------- Fonts ---------- */
+/* Next.js injects --font-inter, --font-instrument, --font-mono-var via layout.tsx */
+
+/* ============================================================
+   DESIGN TOKENS (tasks.md Task 1)
+   ============================================================ */
+:root {
+  --bg:           #090909;
+  --fg:           #f7f9fa;
+  --fg-soft:      #f0f0f0;
+  --fg-muted:     rgba(247, 249, 250, 0.72);
+  --steel:        #828384;
+  --ash:          #6b6b6b;
+  --violet:       #af50ff;
+  --lavender:     #e1bdff;
+  --line:         rgba(247, 249, 250, 0.12);
+  --line-strong:  rgba(247, 249, 250, 0.24);
+  --glass:        rgba(237, 195, 196, 0.05);
+
+  --r-card:   19.2px;
+  --r-btn:    8px;
+  --r-sm:     6px;
+  --r-pill:   9999px;
+
+  --gutter:    clamp(20px, 5vw, 40px);
+  --section-y: clamp(72px, 10vw, 120px);
+  --nav-h:     72px;
+
+  /* Font variables (set by next/font in layout.tsx) */
+  --font-sans:  var(--font-inter, system-ui, sans-serif);
+  --font-serif: var(--font-instrument, Georgia, serif);
+  --font-mono:  var(--font-mono-var, ui-monospace, monospace);
+}
+
+/* ============================================================
+   RESET & BASE (tasks.md Task 1)
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+img { max-width: 100%; }
+svg { flex-shrink: 0; }
+section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--fg);
+  color: var(--bg);
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: top 0.2s;
+  text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ============================================================
+   LAYOUT (tasks.md Task 1 & 2)
+   ============================================================ */
+.container-x {
+  width: 100%;
+  max-width: calc(1200px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Alias for JSX that still says .portfolio-container */
+.portfolio-container {
+  width: 100%;
+  max-width: calc(1200px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Standard section: top hairline + vertical padding */
+.section {
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--line);
+}
+
+/* Aliases for old class names in JSX */
+.portfolio-section {
+  padding-block: var(--section-y);
+}
+.section-divider {
+  border-top: 1px solid var(--line);
+}
+
+/* 64px gap between section header and content */
+.section-header-content-gap {
+  margin-top: 64px;
+}
+
+/* ============================================================
+   SECTION HEADER (tasks.md Task 1)
+   ============================================================ */
+.sh {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 64px;
+}
+.sh__index {
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin: 0 0 16px;
+}
+.sh__stamp {
+  font: 400 clamp(26px, 6.2vw, 72px)/.95 var(--font-mono);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  margin: 0 0 24px;
+  overflow-wrap: anywhere;
+}
+.sh__tagline {
+  font-weight: 300;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  margin: 0 0 12px;
+}
+.sh__tagline em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+.sh__sub {
+  max-width: 560px;
+  margin: 0;
+  color: var(--steel);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* Section header via SectionHeader.tsx component */
+.section-header-stamp {
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-header-title {
+  font-weight: 300;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  margin: 0 0 12px;
+  color: var(--fg);
+}
+
+.section-header-subtitle {
+  max-width: 560px;
+  margin: 0;
+  color: var(--steel);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   BUTTONS (tasks.md Task 1) — never wrap, icon + label inline
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  font: 400 16px/1 var(--font-sans);
+  color: var(--fg);
+  transition: border-color .2s, background .2s, color .2s;
+}
+.btn svg { width: 16px; height: 16px; }
+
+/* Violet pill — ONE per page: hero "View Projects" */
+.btn--primary,
+.btn-violet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--violet);
+  color: #fff;
+  padding: 16px 28px;
+  border: 0;
+  border-radius: var(--r-pill);
+  font: 400 16px/1 var(--font-sans);
+  transition: opacity .2s;
+}
+.btn-violet-pill:hover { opacity: .85; }
+
+/* Ghost pill — Hero "Download Resume", "More on GitHub" */
+.btn--ghost,
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--glass);
+  color: var(--fg);
+  padding: 16px 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font: 400 16px/1 var(--font-sans);
+  transition: border-color .2s, background .2s;
+}
+.btn-pill-ghost:hover { border-color: var(--fg); background: rgba(247,249,250,.1); }
+
+/* Action button — Nav "Resume", form submit (NOT violet) */
+.btn--action,
+.btn-action-filled {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--fg);
+  padding: 10px 18px;
+  border: 1px solid var(--fg);
+  border-radius: var(--r-btn);
+  font: 400 14px/1 var(--font-sans);
+  transition: background .2s, border-color .2s;
+}
+.btn-action-filled:hover { background: rgba(247,249,250,.08); }
+
+/* Compact outlined — project GitHub/Demo, contact socials */
+.btn--outline,
+.btn-compact-outlined {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  background: rgba(247,249,250,.05);
+  color: var(--fg);
+  padding: 9px 15px;
+  border: 1px solid rgba(247,249,250,.28);
+  border-radius: var(--r-sm);
+  font: 400 13px/1 var(--font-sans);
+  transition: border-color .2s, background .2s;
+}
+.btn-compact-outlined:hover { border-color: var(--fg); background: rgba(247,249,250,.1); }
+
+/* Text / mono button */
+.btn--text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 9px 4px;
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* Row of CTA buttons */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+
+/* Icon-only circle button */
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--fg);
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .2s;
+  flex-shrink: 0;
+}
+.icon-btn:hover { border-color: var(--fg); }
+
+/* Focus ring for all interactive elements */
+.btn:focus-visible,
+.btn-violet-pill:focus-visible,
+.btn-pill-ghost:focus-visible,
+.btn-action-filled:focus-visible,
+.btn-compact-outlined:focus-visible,
+.input:focus-visible,
+.hairline-input:focus-visible,
+.icon-btn:focus-visible {
+  outline: 2px solid rgba(247,249,250,.7);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   CARD (tasks.md Task 1)
+   ============================================================ */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--glass);
+  overflow: hidden;
+}
+@media (max-width: 640px) { .card { padding: 24px; } }
+
+/* ============================================================
+   CHIP / PILL (tasks.md Task 1)
+   ============================================================ */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip,
+.tech-chip {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 8px 12px;
+  font: 400 12px/1 var(--font-mono);
+  color: var(--fg);
+  background: rgba(247,249,250,.05);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fg);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.label-mono {
+  font: 400 11px/1.4 var(--font-mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+/* ============================================================
+   NAVBAR (tasks.md Task 3)
+   ============================================================ */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--nav-h);
+  background: rgba(51, 50, 72, .7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ash);
+}
+.nav__inner {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+.nav__logo {
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -.01em;
+  color: var(--fg);
+  text-decoration: none;
+}
+.nav__links {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 2.6vw, 40px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav__link {
+  font: 400 11px/1 var(--font-mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--steel);
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav__link:hover, .nav__link[aria-current="true"] {
+  color: var(--fg);
+  border-bottom-color: var(--fg);
+}
+.nav__progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--violet);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+@media (max-width: 1023px) { .nav__links { display: none; } }
+
+/* ============================================================
+   HERO (tasks.md Task 4)
+   ============================================================ */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(var(--nav-h) + 56px) 96px;
+}
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: 64px;
+  align-items: center;
+}
+@media (max-width: 960px) { .hero__grid { grid-template-columns: 1fr; gap: 48px; } }
+
+/* Fixed full-viewport sky behind everything. 100lvh stops the iOS Safari address-bar jump. */
+.page-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100lvh; z-index: -1;
+           pointer-events: none; overflow: hidden; background: #090909; }
+
+/* CSS stand-in shown while WebGL starts (and if WebGL fails): same palette, so there is no black flash. */
+.page-bg__fallback { position: absolute; inset: 0; background:
+  radial-gradient(70% 38% at 55% 100%, rgba(255,159,252,.22), transparent 70%),
+  radial-gradient(90% 55% at 50% 108%, rgba(82,39,255,.35), transparent 72%),
+  #090909; }
+
+/* The canvas fades in only after its first frame is drawn. If WebGL fails it never shows. */
+.page-bg__canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+                   opacity: 0; transition: opacity 1.2s ease; }
+.page-bg__canvas[data-ready="true"] { opacity: 1; }
+
+/* Scroll dimming scrim (opacity driven by Framer Motion) */
+.page-bg__dim { position: absolute; inset: 0; background: #090909; will-change: opacity; }
+
+@media (prefers-reduced-motion: reduce) { .page-bg__canvas { transition: none; } }
+
+
+/* Boarding pass */
+.boarding-pass-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+@media (max-width: 520px) {
+  .boarding-pass-card { grid-template-columns: 1fr; }
+}
+
+/* CSS barcode */
+.boarding-pass-barcode {
+  border-left: 1px dashed var(--line-strong);
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(247,249,250,.8) 0 2px,
+    transparent 2px 5px,
+    rgba(247,249,250,.8) 5px 6px,
+    transparent 6px 11px,
+    rgba(247,249,250,.8) 11px 14px,
+    transparent 14px 17px
+  ) content-box;
+  padding: 0 16px;
+  margin-block: 20px;
+}
+
+/* ============================================================
+   ABOUT (tasks.md Task 5)
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 64px;
+  align-items: start;
+}
+@media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.about-copy p {
+  margin: 0 0 24px;
+  max-width: 62ch;
+  font-size: 18px;
+  line-height: 1.65;
+  font-weight: 300;
+  color: var(--fg-muted);
+}
+.about-copy p:last-child { margin-bottom: 0; }
+
+.kv {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.kv__v { font: 400 13px/1.5 var(--font-mono); }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.stat-grid > div { padding: 24px 0; }
+.stat-grid > div:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--line); }
+.stat-grid > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+
+/* ============================================================
+   PROJECTS (tasks.md Task 6)
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+.projects-grid > .project--feature { grid-column: 1 / -1; }
+@media (max-width: 860px) { .projects-grid { grid-template-columns: 1fr; } }
+
+.project__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.project__title {
+  font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 36px);
+  line-height: 1.15;
+  letter-spacing: -.015em;
+  margin: 0 0 8px;
+}
+.project__role {
+  margin: 0 0 20px;
+  font: 400 12px/1.5 var(--font-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+.project__desc {
+  max-width: 64ch;
+  margin: 0 0 32px;
+  color: var(--fg-muted);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+.stat { padding: 24px 24px 24px 0; }
+.stat + .stat { padding-left: 24px; border-left: 1px solid var(--line); }
+.stat__n {
+  font-weight: 300;
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+.stat__l {
+  margin-top: 10px;
+  font: 400 11px/1.4 var(--font-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+@media (max-width: 560px) {
+  .stats { grid-template-columns: 1fr; }
+  .stat + .stat { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* PHANTOM violet bloom — 2nd of 3 permitted violet uses */
+.bloom,
+.phantom-bloom {
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 60%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(175,80,255,.35), transparent 70%);
+  filter: blur(20px);
+}
+
+.projects-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+/* ============================================================
+   ACHIEVEMENTS (tasks.md Task 8)
+   ============================================================ */
+.achievements__stage {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Override vendored carousel caption sizes */
+.achievements__stage .circular-carousel__title    { font-size: clamp(20px, 1.8vw, 26px); font-weight: 400; }
+.achievements__stage .circular-carousel__subtitle { font-size: clamp(15px, 1.3vw, 18px); opacity: .7; }
+.achievements__stage .circular-carousel__count    { font-size: 14px; opacity: .65; }
+
+.achievements__hint { margin-top: 24px; text-align: center; }
+
+/* ============================================================
+   EXPERIENCE TIMELINE (tasks.md Task 9)
+   ============================================================ */
+.timeline-route,
+.timeline {
+  position: relative;
+  display: grid;
+  gap: 56px;
+  padding-left: 40px;
+}
+.timeline-route::before,
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.tl-item,
+.timeline-route > div,
+.timeline > div {
+  position: relative;
+}
+
+/* Timeline node dot */
+.timeline-node {
+  position: absolute;
+  left: -40px;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--fg);
+}
+.timeline-node-active {
+  background: var(--fg);
+}
+
+/* ============================================================
+   SKILLS & MARQUEE (tasks.md Task 10)
+   ============================================================ */
+.skill-row {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+.skill-row:last-of-type { border-bottom: 1px solid var(--line); }
+.skill-row__label { padding-top: 8px; }
+@media (max-width: 700px) { .skill-row { grid-template-columns: 1fr; gap: 12px; } }
+
+/* Marquee — MUST be overflow:hidden to prevent G1 horizontal scroll */
+.marquee,
+.edge-masked-marquee {
+  margin-top: 64px;
+  overflow: hidden;
+  max-width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee__track,
+.marquee-content {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee__track,
+.edge-masked-marquee:hover .marquee-content {
+  animation-play-state: paused;
+}
+.marquee__item { flex: none; white-space: nowrap; }
+
+/* Seamless loop: list is rendered twice, translate by -50% */
+@keyframes marquee { to { transform: translateX(calc(-50% - 6px)); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track,
+  .marquee-content {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+}
+
+/* ============================================================
+   EDUCATION (tasks.md Task 11)
+   ============================================================ */
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+@media (max-width: 760px) { .edu-grid { grid-template-columns: 1fr; } }
+
+.edu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.icon-circle {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+}
+.edu__title { margin: 0 0 8px; font-weight: 400; font-size: clamp(20px, 2vw, 26px); line-height: 1.25; }
+.edu__prog  { margin: 0 0 24px; color: var(--steel); }
+.edu__foot  { margin-top: auto; }
+
+/* ============================================================
+   CONTACT (tasks.md Task 12)
+   ============================================================ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: start;
+}
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.copy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+}
+.copy-row:last-of-type { border-bottom: 1px solid var(--line); }
+.copy-row__v { font-size: clamp(17px, 1.8vw, 22px); overflow-wrap: anywhere; }
+
+.profiles { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+.field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+
+/* Form inputs — real surfaces */
+.input,
+.hairline-input {
+  width: 100%;
+  padding: 16px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--fg);
+  background: rgba(247,249,250,.04);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-btn);
+  transition: border-color .2s;
+}
+.input::placeholder,
+.hairline-input::placeholder { color: var(--steel); }
+.input:focus,
+.hairline-input:focus {
+  border-color: var(--fg);
+  outline: 2px solid rgba(247,249,250,.6);
+  outline-offset: 2px;
+}
+.textarea,
+.hairline-input[as="textarea"],
+textarea.hairline-input {
+  min-height: 176px;
+  resize: vertical;
+}
+
+/* ============================================================
+   FOOTER (tasks.md Task 13)
+   ============================================================ */
+.footer {
+  border-top: 1px solid var(--line);
+  padding-block: 40px 72px;
+}
+.footer__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  font-size: 14px;
+}
+.footer__row + .footer__row {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  color: var(--steel);
+}
+.footer__coord { font-family: var(--font-mono); letter-spacing: .06em; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.font-serif { font-family: var(--font-serif); }
+.font-mono  { font-family: var(--font-mono); }
+.italic     { font-style: italic; }
+.text-steel { color: var(--steel); }
+.text-muted { color: var(--fg-muted); }
+
+/* ============================================================
+   TOAST / NOTIFICATION
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(247,249,250,.08);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-btn);
+  font-size: 0.875rem;
+  color: var(--fg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ============================================================
+   REDUCED MOTION GLOBAL
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee__track,
+  .marquee-content {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+}
